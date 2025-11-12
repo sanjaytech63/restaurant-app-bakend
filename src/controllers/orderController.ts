@@ -44,7 +44,7 @@ const createOrder = async (req: any, res: Response): Promise<void> => {
 
 const getUserOrders = async (req: any, res: Response): Promise<void> => {
     try {
-        const orders = await Order.find({ customer: req.user?._id })
+        const orders = await Order.find({ customer: req.user?.id })
             .populate('items.menuItem')
             .sort({ createdAt: -1 });
 
