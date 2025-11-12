@@ -26,7 +26,7 @@ const createOrder = async (req: any, res: Response): Promise<void> => {
         }
 
         const order = new Order({
-            customer: req.user?._id,
+            customer: req.user?.id,
             items: orderItems,
             totalAmount,
             deliveryAddress,
