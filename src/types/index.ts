@@ -1,4 +1,5 @@
-import { Document, ObjectId } from 'mongoose';
+import { Document, ObjectId, } from 'mongoose';
+import { Request } from 'express';
 
 export interface IUser extends Document {
     _id: ObjectId;
@@ -41,7 +42,11 @@ export interface IOrder extends Document {
 }
 
 export interface AuthRequest extends Request {
-    user?: any;
+  user?: {
+    id: string;
+    email?: string;
+    role?: string;
+  };
 }
 
 export interface JwtPayload {

@@ -3,7 +3,7 @@ import jwt from 'jsonwebtoken';
 import User from '../models/User';
 import { AuthRequest, JwtPayload } from '../types';
 
-export const auth = async (req: any, res: Response, next: NextFunction): Promise<void> => {
+export const auth = async (req: AuthRequest, res: Response, next: NextFunction): Promise<void> => {
   try {
     const token = req.header('Authorization')?.replace('Bearer ', '');
 
@@ -20,7 +20,12 @@ export const auth = async (req: any, res: Response, next: NextFunction): Promise
       return;
     }
 
-    req.user = user;
+    req.user = {
+      id: user._id.toString(),
+      email: user.email,
+      role: user.role,
+    };
+
     next();
   } catch (error) {
     res.status(401).json({ message: 'Token is not valid' });

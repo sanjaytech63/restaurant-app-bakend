@@ -88,16 +88,15 @@ const login = async (req: LoginRequest, res: Response): Promise<void> => {
 
 const getMe = async (req: AuthRequest, res: Response): Promise<void> => {
     try {
-        res.json({
-            user: {
-                id: req.user?._id,
-                name: req.user?.name,
-                email: req.user?.email,
-                role: req.user?.role
-            }
-        });
+        if (!req.user) {
+            res.status(401).json({ message: 'Not authorized' });
+            return;
+        }
+
+        const user = await User.findById(req.user.id).select('-password');
+        res.status(200).json(user);
     } catch (error) {
-        res.status(500).json({ message: 'Server error', error: (error as Error).message });
+        res.status(500).json({ message: 'Server error' });
     }
 };
 
